@@ -1,3 +1,8 @@
+"""
+  Q.Write a query to find users who have placed orders, but whose latest order amount 
+   is lower than their first ever order amount.
+"""
+
 CREATE TABLE users (
   user_id BIGINT PRIMARY KEY,
   user_name VARCHAR(30)
@@ -38,8 +43,7 @@ INSERT INTO orders (order_id, user_id, order_date, order_amount) VALUES
 (502, 5, '2025-05-03', 4600.00),
 (503, 5, '2025-05-05', 350.00);  
 
--- Q.Write a query to find users who have placed orders, but whose latest order amount 
--- is lower than their first ever order amount.
+
 
 
 -- select * from users ;
@@ -51,30 +55,47 @@ with cte1 as (
     a.user_id as users_id,
     a.user_name,
     b.order_date,
-    b.order_amount,
-    row_number()over(partition by a.user_id order by order_date asc) as first_order_number,
-    row_number()over(partition by a.user_id order by order_date desc) as last_order_number
+    b.order_amount
   from users as a 
   inner join orders as b 
   on a.user_id = b.user_id
 ),
+
 cte2 as (
+select
+    users_id,
+    user_name,
+    order_date,
+    order_amount,
+    row_number()over(partition by users_id order by order_date asc) as first_order_number,
+    row_number()over(partition by users_id order by order_date desc) as last_order_number
+from cte1
+),
+
+cte3 as (
 select 
   a.users_id,
   a.user_name,
   a.order_amount as first_order_amount,
-  b.order_amount as last_order_amount
-from cte1 as a 
-join cte1 as b 
-on a.users_id = b.users_id
-where a.first_order_number = 1 
+  b.order_amount as latet_order_amount
+from 
+  cte2 as a 
+join 
+  cte2 as b 
+on 
+  a.users_id = b.users_id
+where 
+    a.first_order_number = 1 
 and b.last_order_number = 1
 )
 
 select 
-  *
-from cte2 
-where last_order_amount < first_order_amount ;
+  users_id,
+  user_name,
+  first_order_amount,
+  latet_order_amount
+from cte3
+where latet_order_amount < first_order_amount ;
 
 
 
