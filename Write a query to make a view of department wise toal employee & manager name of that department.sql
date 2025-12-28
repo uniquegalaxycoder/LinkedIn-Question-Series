@@ -1,37 +1,30 @@
 """
-❓ Interview Question (Joins Foundation)
+You have two tables 👁️‍🗨️ :
+🕵 
 
-You have two tables:
+Table : employee
+Column : emp_id, emp_name, depart_id
 
-employee
+Table : department
+Column : depart_id, depart_name, manager_id
 
-emp_id, emp_name, depart_id
-
-department
-
-depart_id, depart_name, manager_id
-
-Rules:
-
-Every employee may or may not belong to a department
-
-Every department may or may not have employees
-
-manager_id in department refers to emp_id of employee table
+Rule :
+1.Every employee may or may not belong to a department
+2.Every department may or may not have employees
+3.manager_id in department refers to emp_id of employee table
 
 🎯 Write a query to return:
+1. All department names
+2. Number of employees in each department
+3. Manager name of that department
+4. Even if department has 0 employees, it should still appear.
+5. Order result by employee count descending.
 
-All department names
-
-Number of employees in each department
-
-Manager name of that department
-
-Even if department has 0 employees, it should still appear
-
-Bonus check: Order result by employee count descending.
-
+Combination : Join's logic
+  
 """
+
+
 
 CREATE TABLE employee (
   emp_id BIGINT PRIMARY KEY,
@@ -46,18 +39,18 @@ CREATE TABLE department (
 );
 
 INSERT INTO employee (emp_id, emp_name, depart_id) VALUES
-(101, 'Omkar', 1),
-(102, 'Amit', 1),
-(103, 'Priya', 2),
-(104, 'Rahul', 2),
-(105, 'Sneha', 3),
+(101, 'Olive', 1),
+(102, 'Livia', 1),
+(103, 'Robert', 2),
+(104, 'Josephina', 2),
+(105, 'Kyla', 3),
 (106, 'John', 3),
 (107, 'Sara', 3),
 (108, 'Mike', 4),
 (109, 'Alex', 4),
-(110, 'Neha', NULL),
+(110, 'Antonia', NULL),
 (111, 'David', 2),
-(112, 'Kiran', 1);
+(112, 'Stephan', 1);
 
 INSERT INTO department (depart_id, depart_name, manager_id) VALUES
 (1, 'Operations', 101),
@@ -117,3 +110,17 @@ group by
 order by 
   count(cte2.emp_id) desc
   ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
